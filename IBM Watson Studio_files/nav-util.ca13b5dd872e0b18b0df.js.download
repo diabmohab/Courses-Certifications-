@@ -1,0 +1,55 @@
+/*******************************************************************************
+ * Licensed Materials - Property of IBM
+ * (c) Copyright IBM Corporation 2016. All Rights Reserved.
+ *
+ * Note to U.S. Government Users Restricted Rights:
+ * Use, duplication or disclosure restricted by GSA ADP Schedule
+ * Contract with IBM Corp.
+ *******************************************************************************/
+
+"use strict";
+
+(function() {
+	var isReady = false;
+	document.addEventListener("DOMContentLoaded", function onLoad() {
+		if (isReady) {
+			console.warn("WARNING: Trying to call init() on left-nav more than once");
+			return;
+		}
+
+		var dapHeader = window.dapHeader;
+		if (!dapHeader) {
+			console.warn("WARNING: Top nav global object not found. Top-nav will not be functional");
+			return;
+		}
+
+		if (!dapHeader.addMenuChangeListener) {
+			console.warn("WARNING: Top nav global object does not contain 'addMenuChangeListener' API");
+		} else {
+			var contentNode = document.getElementById("contentNode");
+			if (!contentNode) {
+				console.warn("WARNING: Element 'contentNode' is undefined");
+				return;
+			}
+
+			dapHeader.addMenuChangeListener(function(menu) {
+				if (menu === "sidemenu") {
+
+					/*
+					if (window.location.pathname === "/analytics") {
+						contentNode.classList.toggle("sidemenu-opened");
+					}
+					*/
+				} else if (menu === "profilemenu") {
+					contentNode.classList.toggle("profilemenu-opened");
+				} else if (menu === "communitymenu") {
+					contentNode.classList.toggle("communitymenu-opened");
+				} else {
+					contentNode.classList.remove("sidemenu-opened");
+				}
+			});
+		}
+
+		isReady = true;
+	});
+}());
